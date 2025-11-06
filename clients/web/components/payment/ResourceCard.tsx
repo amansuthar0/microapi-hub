@@ -17,7 +17,7 @@ export function ResourceCard({ route, requirements, baseUrl = 'http://localhost:
   const paymentInfo = formatPaymentAmount(
     requirements.maxAmountRequired,
     requirements.asset,
-    requirements.extra?.name
+    (requirements.extra as any)?.name as string | undefined
   );
 
   // Extract method and path from route (format: "GET /api/data" or "/api/data")
