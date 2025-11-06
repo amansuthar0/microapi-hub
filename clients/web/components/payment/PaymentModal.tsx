@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import type { PaymentRequirements } from '../../../shared/types/x402';
+import type { PaymentRequirements } from '../../types/x402';
 import { createPaymentHeader, executePayment } from '../../lib/payments';
 import { formatPaymentAmount } from '../../lib/solana';
 import { getSolscanUrl } from '../../lib/wallet';

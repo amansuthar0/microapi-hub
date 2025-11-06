@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { PaymentModal } from './PaymentModal';
-import type { PaymentRequirements } from '../../../shared/types/x402';
+import type { PaymentRequirements } from '../../types/x402';
 
 interface PaymentButtonProps {
   resourceUrl: string;

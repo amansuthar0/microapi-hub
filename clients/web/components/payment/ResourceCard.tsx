@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Card } from '../ui/Card';
 import { formatPaymentAmount, formatAddress } from '@/lib/solana';
 import { PaymentButton } from './PaymentButton';
-import type { PaymentRequirements } from '../../../shared/types/x402';
+import type { PaymentRequirements } from '../../types/x402';
 import Link from 'next/link';
 
 interface ResourceCardProps {
