@@ -3,17 +3,19 @@
  */
 import { Connection, PublicKey, Transaction, VersionedTransaction } from '@solana/web3.js';
 import { clusterApiUrl } from '@solana/web3.js';
+import { getNetwork, getRpcUrl, getExplorerClusterParam } from './config';
 
 /**
  * Get Solana RPC connection based on network
  */
-export function getConnection(network: string = 'devnet'): Connection {
-  const rpcUrl = network === 'devnet' 
+export function getConnection(network: string = getNetwork()): Connection {
+  const custom = getRpcUrl();
+  const net = network || getNetwork();
+  const rpcUrl = custom || (net === 'devnet' 
     ? clusterApiUrl('devnet')
-    : network === 'mainnet-beta'
+    : net === 'mainnet-beta'
     ? clusterApiUrl('mainnet-beta')
-    : clusterApiUrl('testnet');
-    
+    : clusterApiUrl('testnet'));
   return new Connection(rpcUrl, 'confirmed');
 }
 
@@ -40,8 +42,8 @@ export function formatAddress(address: string, length: number = 4): string {
 /**
  * Get Solscan explorer URL for transaction
  */
-export function getSolscanUrl(signature: string, network: string = 'devnet'): string {
-  const cluster = network === 'devnet' ? 'devnet' : network === 'mainnet-beta' ? '' : 'testnet';
+export function getSolscanUrl(signature: string, network: string = getNetwork()): string {
+  const cluster = getExplorerClusterParam(network);
   const prefix = cluster ? `https://solscan.io/tx/${signature}?cluster=${cluster}` : `https://solscan.io/tx/${signature}`;
   return prefix;
 }
@@ -49,8 +51,8 @@ export function getSolscanUrl(signature: string, network: string = 'devnet'): st
 /**
  * Get Solscan explorer URL for address
  */
-export function getSolscanAddressUrl(address: string, network: string = 'devnet'): string {
-  const cluster = network === 'devnet' ? 'devnet' : network === 'mainnet-beta' ? '' : 'testnet';
+export function getSolscanAddressUrl(address: string, network: string = getNetwork()): string {
+  const cluster = getExplorerClusterParam(network);
   const prefix = cluster ? `https://solscan.io/account/${address}?cluster=${cluster}` : `https://solscan.io/account/${address}`;
   return prefix;
 }

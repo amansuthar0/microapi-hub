@@ -3,6 +3,7 @@ import { Footer } from '../../components/Footer';
 import { Card } from '../../components/ui/Card';
 import { CopyButton } from '../../components/ui/CopyButton';
 import { getTransactionDetails, getSolscanUrl } from '../../lib/transactions';
+import { getNetwork } from '../../lib/config';
 import { formatDistanceToNow } from 'date-fns';
 
 function Form() {
@@ -23,13 +24,13 @@ function Form() {
   );
 }
 
-export default async function ReceiptPage({ searchParams }: { searchParams: { tx?: string } }) {
+export default async function ReceiptPage({ searchParams }: { searchParams: { tx?: string, net?: string } }) {
   const tx = searchParams.tx;
+  const net = (searchParams.net as any) || getNetwork();
   let txDetails = null;
 
   if (tx) {
-    // Try to fetch transaction details (default to devnet for now)
-    txDetails = await getTransactionDetails(tx, 'devnet');
+    txDetails = await getTransactionDetails(tx, net);
   }
 
   return (

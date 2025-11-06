@@ -9,6 +9,7 @@ import { getSolscanUrl, getTransactionDetails, TransactionDetails } from '../../
 import { formatDistanceToNow } from 'date-fns';
 import { formatPaymentAmount } from '../../lib/solana';
 import Link from 'next/link';
+import { getNetwork } from '../../lib/config';
 
 interface StoredTransaction {
   signature: string;
@@ -26,6 +27,10 @@ export default function TransactionsPage() {
   const [transactions, setTransactions] = useState<StoredTransaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [txDetails, setTxDetails] = useState<Record<string, TransactionDetails>>({});
+  const [query, setQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'confirmed' | 'failed'>('all');
+  const [networkFilter, setNetworkFilter] = useState<'all' | 'devnet' | 'mainnet-beta' | 'testnet'>('all');
+  const [polling, setPolling] = useState(true);
 
   useEffect(() => {
     // Load transactions from localStorage
@@ -56,6 +61,22 @@ export default function TransactionsPage() {
     }
   }, []);
 
+  // Poll pending transactions
+  useEffect(() => {
+    if (!polling) return;
+    const interval = setInterval(async () => {
+      const pending = transactions.filter(t => t.status === 'pending');
+      for (const tx of pending) {
+        const details = await getTransactionDetails(tx.signature, tx.network);
+        if (details) {
+          setTxDetails(prev => ({ ...prev, [tx.signature]: details }));
+          if (details.success) updateTransactionStatus(tx.signature, 'confirmed');
+        }
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [transactions, polling]);
+
   const updateTransactionStatus = (signature: string, status: 'confirmed' | 'failed') => {
     const updated = transactions.map(tx => 
       tx.signature === signature ? { ...tx, status } : tx
@@ -70,6 +91,37 @@ export default function TransactionsPage() {
       setTransactions([]);
     }
   };
+
+  const exportCsv = () => {
+    const rows = [
+      ['signature','timestamp','resource','amount','asset','network','status'],
+      ...filtered.map(t => [
+        t.signature,
+        new Date(t.timestamp).toISOString(),
+        t.resource,
+        t.amount,
+        t.asset,
+        t.network,
+        t.status
+      ])
+    ];
+    const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'transactions.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const filtered = transactions.filter(t => {
+    const matchesStatus = statusFilter === 'all' || t.status === statusFilter;
+    const matchesNetwork = networkFilter === 'all' || t.network.includes(networkFilter);
+    const q = query.trim().toLowerCase();
+    const matchesQuery = q.length === 0 || t.signature.toLowerCase().includes(q) || t.resource.toLowerCase().includes(q);
+    return matchesStatus && matchesNetwork && matchesQuery;
+  });
 
   if (loading) {
     return (
@@ -87,21 +139,67 @@ export default function TransactionsPage() {
     <div className="flex flex-col min-h-screen">
       <NavBar />
       <main className="mx-auto max-w-4xl px-4 py-10 space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
           <h1 className="text-2xl font-semibold">Transaction History</h1>
-          {transactions.length > 0 && (
-            <button
-              onClick={clearTransactions}
-              className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-sm transition-colors"
+          <div className="flex items-center gap-2">
+            <input
+              placeholder="Search signature or resource"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="px-3 py-2 rounded bg-surface-200/60 border border-white/10 text-white placeholder-neutral-500"
+              aria-label="Search transactions"
+            />
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value as any)}
+              className="px-3 py-2 rounded bg-surface-200/60 border border-white/10 text-white"
+              aria-label="Filter by status"
             >
-              Clear History
-            </button>
-          )}
+              <option value="all">All statuses</option>
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="failed">Failed</option>
+            </select>
+            <select
+              value={networkFilter}
+              onChange={(e) => setNetworkFilter(e.target.value as any)}
+              className="px-3 py-2 rounded bg-surface-200/60 border border-white/10 text-white"
+              aria-label="Filter by network"
+            >
+              <option value="all">All networks</option>
+              <option value="devnet">Devnet</option>
+              <option value="mainnet-beta">Mainnet</option>
+              <option value="testnet">Testnet</option>
+            </select>
+            {transactions.length > 0 && (
+              <>
+                <button
+                  onClick={() => setPolling(p => !p)}
+                  className="px-3 py-2 rounded bg-slate-800 hover:bg-slate-700 text-white text-sm"
+                  aria-pressed={polling}
+                >
+                  {polling ? 'Stop Polling' : 'Start Polling'}
+                </button>
+                <button
+                  onClick={exportCsv}
+                  className="px-3 py-2 rounded bg-slate-800 hover:bg-slate-700 text-white text-sm"
+                >
+                  Export CSV
+                </button>
+                <button
+                  onClick={clearTransactions}
+                  className="px-3 py-2 rounded bg-slate-800 hover:bg-slate-700 text-white text-sm"
+                >
+                  Clear History
+                </button>
+              </>
+            )}
+          </div>
         </div>
 
-        {transactions.length === 0 ? (
+        {filtered.length === 0 ? (
           <Card className="p-8 text-center">
-            <p className="text-neutral-400 mb-4">No transactions yet.</p>
+            <p className="text-neutral-400 mb-4">No transactions found.</p>
             <p className="text-sm text-neutral-500">
               Your payment transactions will appear here after you make payments.
             </p>
@@ -111,7 +209,7 @@ export default function TransactionsPage() {
           </Card>
         ) : (
           <div className="space-y-4">
-            {transactions.map((tx) => {
+            {filtered.map((tx) => {
               const details = txDetails[tx.signature];
               const paymentInfo = formatPaymentAmount(tx.amount, tx.asset);
               

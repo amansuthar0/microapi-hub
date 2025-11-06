@@ -23,8 +23,24 @@ export function NavBar() {
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-4 text-sm text-neutral-300">
           {navLinks.map((l) => (
-            <Link href={l.href} key={l.label} className={`hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 rounded px-2 py-1 ${l.label === 'Transactions' ? 'font-semibold text-brand bg-brand/10' : ''}`}>{l.label}</Link>
+            <Link href={l.href} key={l.label} className={`hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 rounded px-2 py-1`}>{l.label}</Link>
           ))}
+          <div className="relative group">
+            <button className="px-2 py-1 rounded hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40">Docs ▾</button>
+            <div className="absolute hidden group-hover:block top-full left-0 mt-2 bg-slate-900 border border-white/10 rounded shadow-lg min-w-[220px]">
+              <div className="p-2 flex flex-col text-neutral-300">
+                <Link className="px-3 py-2 rounded hover:bg-white/5" href="/docs/getting-started">Getting Started</Link>
+                <Link className="px-3 py-2 rounded hover:bg-white/5" href="/docs/installation">Installation</Link>
+                <Link className="px-3 py-2 rounded hover:bg-white/5" href="/docs/configuration">Configuration</Link>
+                <Link className="px-3 py-2 rounded hover:bg-white/5" href="/docs/solana-setup">Solana Setup</Link>
+                <Link className="px-3 py-2 rounded hover:bg-white/5" href="/docs/provider-guide">Provider Guide</Link>
+                <Link className="px-3 py-2 rounded hover:bg-white/5" href="/docs/client-guide">Client Guide</Link>
+                <Link className="px-3 py-2 rounded hover:bg-white/5" href="/docs/api-reference">API Reference</Link>
+                <Link className="px-3 py-2 rounded hover:bg-white/5" href="/docs/troubleshooting">Troubleshooting</Link>
+                <Link className="px-3 py-2 rounded hover:bg-white/5" href="/docs?ref=solana">Solana Reference</Link>
+              </div>
+            </div>
+          </div>
           <div className="ml-2">
             <ThemeToggle />
           </div>
@@ -47,6 +63,19 @@ export function NavBar() {
               {navLinks.map((l) => (
                 <Link href={l.href} key={l.label} onClick={() => setDrawerOpen(false)} className={`block px-2 py-2 rounded hover:bg-brand/10 ${l.label === 'API Docs' ? 'font-semibold text-brand' : 'text-white'}`}>{l.label}</Link>
               ))}
+              <div className="pt-2 border-t border-white/10 mt-2" />
+              <div className="flex flex-col">
+                <span className="text-xs uppercase tracking-wide text-neutral-500 px-2">Docs</span>
+                <Link href="/docs/getting-started" onClick={() => setDrawerOpen(false)} className="block px-2 py-2 rounded hover:bg-white/5 text-neutral-300">Getting Started</Link>
+                <Link href="/docs/installation" onClick={() => setDrawerOpen(false)} className="block px-2 py-2 rounded hover:bg-white/5 text-neutral-300">Installation</Link>
+                <Link href="/docs/configuration" onClick={() => setDrawerOpen(false)} className="block px-2 py-2 rounded hover:bg-white/5 text-neutral-300">Configuration</Link>
+                <Link href="/docs/solana-setup" onClick={() => setDrawerOpen(false)} className="block px-2 py-2 rounded hover:bg-white/5 text-neutral-300">Solana Setup</Link>
+                <Link href="/docs/provider-guide" onClick={() => setDrawerOpen(false)} className="block px-2 py-2 rounded hover:bg-white/5 text-neutral-300">Provider Guide</Link>
+                <Link href="/docs/client-guide" onClick={() => setDrawerOpen(false)} className="block px-2 py-2 rounded hover:bg-white/5 text-neutral-300">Client Guide</Link>
+                <Link href="/docs/api-reference" onClick={() => setDrawerOpen(false)} className="block px-2 py-2 rounded hover:bg-white/5 text-neutral-300">API Reference</Link>
+                <Link href="/docs/troubleshooting" onClick={() => setDrawerOpen(false)} className="block px-2 py-2 rounded hover:bg-white/5 text-neutral-300">Troubleshooting</Link>
+                <Link href="/docs?ref=solana" onClick={() => setDrawerOpen(false)} className="block px-2 py-2 rounded hover:bg-white/5 text-neutral-300">Solana Reference</Link>
+              </div>
               <div className="mt-4 flex items-center gap-2">
                 <ThemeToggle />
                 <WalletButton />

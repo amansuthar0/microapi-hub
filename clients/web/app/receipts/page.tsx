@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { getSolscanUrl, getConnection } from '../../lib/wallet';
 import { formatPaymentAmount } from '../../lib/solana';
 import { format } from 'date-fns';
+import { getNetwork } from '../../lib/config';
 
 interface Receipt {
   signature: string;
@@ -21,6 +22,7 @@ export default function Receipts() {
   const [searchHash, setSearchHash] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [lookupNetwork, setLookupNetwork] = useState<'devnet' | 'mainnet-beta' | 'testnet'>(getNetwork());
 
   useEffect(() => {
     // Load receipts from localStorage
@@ -46,7 +48,7 @@ export default function Receipts() {
 
     try {
       // Verify transaction exists on Solana
-      const connection = getConnection('devnet');
+      const connection = getConnection(lookupNetwork);
       const signature = await connection.getSignatureStatus(searchHash);
       
       if (!signature.value) {
@@ -85,7 +87,7 @@ export default function Receipts() {
         resource: 'Unknown',
         amount: '0',
         asset: 'SOL',
-        network: 'solana-devnet',
+        network: lookupNetwork,
         status: signature.value.err ? 'failed' : 'confirmed',
         payer: payerDerived,
       };
@@ -120,6 +122,16 @@ export default function Receipts() {
             className="flex-1 px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder-neutral-500 focus:outline-none focus:border-brand"
             onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
           />
+          <select
+            value={lookupNetwork}
+            onChange={(e) => setLookupNetwork(e.target.value as any)}
+            className="px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white"
+            aria-label="Network"
+          >
+            <option value="devnet">Devnet</option>
+            <option value="mainnet-beta">Mainnet</option>
+            <option value="testnet">Testnet</option>
+          </select>
           <button
             onClick={handleSearch}
             disabled={loading}
