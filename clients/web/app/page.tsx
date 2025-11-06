@@ -8,7 +8,7 @@ import { formatPaymentAmount } from '../lib/solana';
 async function fetchDiscovery() {
   const url = process.env.NEXT_PUBLIC_PROVIDER_DISCOVERY_URL ?? 'http://localhost:8080/.well-known/x402';
   try {
-    const res = await fetch(url, { cache: 'no-store', next: { revalidate: 10 } });
+    const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) return null;
     return res.json();
   } catch {

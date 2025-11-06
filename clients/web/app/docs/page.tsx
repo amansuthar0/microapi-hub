@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NavBar } from '../../components/NavBar';
 import { Footer } from '../../components/Footer';
 import { Card } from '../../components/ui/Card';
@@ -17,15 +18,23 @@ function isEnglishDoc(name: string): boolean {
 }
 
 async function loadDocsList(): Promise<string[]> {
-  const root = path.join(process.cwd(), '..', '..', 'solana_com');
-  const entries = await fs.readdir(root);
-  return entries.filter((f) => f.endsWith('.html')).filter(isEnglishDoc);
+  try {
+    const root = path.join(process.cwd(), '..', '..', 'solana_com');
+    const entries = await fs.readdir(root);
+    return entries.filter((f) => f.endsWith('.html')).filter(isEnglishDoc);
+  } catch {
+    return [];
+  }
 }
 
 async function loadDoc(name: string): Promise<string> {
-  const filePath = path.join(process.cwd(), '..', '..', 'solana_com', name);
-  const content = await fs.readFile(filePath, 'utf8');
-  return content;
+  try {
+    const filePath = path.join(process.cwd(), '..', '..', 'solana_com', name);
+    const content = await fs.readFile(filePath, 'utf8');
+    return content;
+  } catch {
+    return '<p>Documentation assets are not available in this deployment.</p>';
+  }
 }
 
 export default async function DocsPage({ searchParams }: { searchParams: { file?: string } }) {
