@@ -1,7 +1,7 @@
 {
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
-  "installCommand": "npm ci",
+  "installCommand": "npm install",
   "framework": "nextjs",
   "outputDirectory": ".next",
   "rewrites": [
@@ -53,15 +53,6 @@
         }
       ]
     }
-  ],
-  "csp": {
-    "default-src": ["'self'"],
-    "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://*.solana.com"],
-    "style-src": ["'self'", "'unsafe-inline'"],
-    "img-src": ["'self'", "data:", "https:"],
-    "connect-src": ["'self'", "https://api.mainnet-beta.solana.com", "https://api.devnet.solana.com", "https://*.vercel.app"],
-    "font-src": ["'self'", "data:"],
-    "frame-src": ["'none'"]
-  }
+  ]
 }
 
